@@ -62,7 +62,10 @@ class Morph {
 			}
 
 		})
-		moves = moves.filter(move => move[1] >= this.row);
+		moves = moves.filter(move => {
+			return board.getBoardSpace(move[0], move[1]) != undefined;
+		});
+
 		return moves
 	}
 
@@ -72,16 +75,16 @@ class Morph {
 		let getNextSpace = () => board.getBoardSpace(this.col + (offset[0]*count), this.row + (offset[1]*count));
 
 		let next = getNextSpace();
-		console.log('offset:', offset, 'piece:', next);
+		console.log('offset:', offset);
 		debugger
 		while(next != undefined) {
+			// Can't take your own pieces
 			if (next.player == this.player) break;
-			console.log(`space${count}: ${this.col + (offset[0]*count)}${this.row + (offset[1]*count)}`);
-			moves.push(`${this.col + (offset[0]*count)}${this.row + (offset[1]*count)}`);
+			// If moving forward or backwards on an enemy
+			if (offset[1] > 0 || (offset[1] < 0 && next.player == 1)) moves.push(`${this.col + (offset[0]*count)}${this.row + (offset[1]*count)}`);
 			if(next != 0) break;
 
 			count++;
-			console.log(count);
 			next = getNextSpace();
 		}
 		console.log('moves', moves);

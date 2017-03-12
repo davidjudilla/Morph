@@ -69,7 +69,7 @@ class Game {
 			return false;
 		}
 		let validMoves = piece.getMoves(this.board);
-		console.log("Valid moves: " + validMoves.map(move => letters[Number(move[0]) - 1] + move[1]));
+		console.log(`Valid moves for ${piece.symbol}: ${validMoves.map(move => letters[Number(move[0]) - 1] + move[1])}`);
 		console.log(`Your input ${letters[destCol-1]}${destRow}`);
 		if (validMoves.includes(`${destCol}${destRow}`)) {
 			this.board.setBoardSpace(destCol, destRow, piece);
@@ -81,7 +81,7 @@ class Game {
 	}
 
 	generateMove() {
-		
+
 	}
 
 	isGameOver() {
