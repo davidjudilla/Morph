@@ -1,18 +1,29 @@
 class King {
-	constructor(row, col, player) {
+	constructor(col, row, player) {
 		this.row = row;
 		this.col = col;
 		this.player = player;
-		this.symbol = (player == "human") ? 'k' : 'K';
+		this.symbol = (player == 0) ? 'k' : 'K';
+		this.offsets = [
+			[-1,0]
+		];
+		if (this.player != 0) {
+			this.offsets = this.offsets.map(offset => offset.map(x => -x))
+		}
 	}
 
-	move(row, col) {
+	move(col, row) {
 		this.row = row;
 		this.col = col;
 	}
 
 	getMoves(board) {
 		let moves = [];	
+		this.offsets.forEach(offset => {
+			moves.push(`${this.col + offset[0]}${this.row + offset[1]}`);
+		});
+
+		return moves.filter(x => x)
 	}
 
 }

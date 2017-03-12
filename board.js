@@ -27,8 +27,8 @@ class Board {
 				let { row, col } = space;
 
 				let [oppRow, oppCol] = [this.numRow - row + 1, this.numCol - col + 1] 
-				this.setBoardSpace(col, row, new pieceConstr(row, col, "human"))
-				this.setBoardSpace(oppCol, oppRow, new pieceConstr(oppRow, oppCol, "opponent"))
+				this.setBoardSpace(col, row, new pieceConstr(col, row, 0))
+				this.setBoardSpace(oppCol, oppRow, new pieceConstr(oppCol, oppRow, 1))
 			})
 		});
 	}
@@ -37,7 +37,7 @@ class Board {
 		console.log(this.board.map((row,i) => {
 			return [this.numRow - i, ...row.map(square => square.symbol ? square.symbol : '-')].join(' ')
 		}).join('\n'))
-		console.log('  ' + letters.join(' '));
+		console.log('  ' + letters.join(' ') + '\n');
 	}
 
 	getBoardSpace(col, row) {
