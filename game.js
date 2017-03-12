@@ -68,10 +68,10 @@ class Game {
 
 		let [origCol, origRow] = [...move.slice(0,2)];
 		let [destCol, destRow] = [...move.slice(2)];
-		origCol = letters.indexOf(origCol);
-		destCol = letters.indexOf(destCol);
-		origRow = numRow - origRow;
-		destRow = numRow - destRow;
+		origCol = letters.indexOf(origCol) + 1;
+		destCol = letters.indexOf(destCol) + 1;
+		// origRow = numRow - origRow;
+		// destRow = numRow - destRow;
 
 		console.log(origRow, origCol)
 		let piece = this.board[origRow][origCol]
