@@ -41,6 +41,7 @@ class Board {
 	}
 
 	getBoardSpace(col, row) {
+		if (row < 1 || row > 8 || col < 1 || col > 8) return undefined;
 		return this.board[this.numRow - row][col - 1];
 	}
 
