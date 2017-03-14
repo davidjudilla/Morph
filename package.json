@@ -4,6 +4,7 @@
   "description": "",
   "main": "main.js",
   "dependencies": {
+    "colors": "^1.1.2",
     "readline-sync": "^1.4.6"
   },
   "devDependencies": {},

@@ -42,37 +42,3 @@ module.exports = {
 		]	
 	},
 }
-	// "king": {
-	// 	"pieceConstr" : King,
-	// 	"spaces" : [
-	// 		{ row : 7, col: 4}
-	// 	]
-	// },
-	// "pawn": {
-	// 	"pieceConstr" : Pawn,
-	// 	"spaces" : [
-	// 		{ row : 5, col: 3},
-	// 		{ row : 5, col: 2}
-	// 	]	
-	// },
-	// "knight": {
-	// 	"pieceConstr" : Knight,
-	// 	"spaces" : [
-	// 		{ row : 6, col: 0},
-	// 		{ row : 6, col: 5}
-	// 	]	
-	// },
-	// "rook": {
-	// 	"pieceConstr" : Rook,
-	// 	"spaces" : [
-	// 		{ row : 6, col: 3},
-	// 		{ row : 6, col: 2}
-	// 	]	
-	// },
-	// "bishop": {
-	// 	"pieceConstr" : Bishop,
-	// 	"spaces" : [
-	// 		{ row : 6, col: 1},
-	// 		{ row : 6, col: 4}
-	// 	]	
-	// },

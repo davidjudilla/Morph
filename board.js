@@ -37,7 +37,8 @@ class Board {
 		console.log(this.board.map((row,i) => {
 			return [this.numRow - i, ...row.map(square => square.symbol ? square.symbol : '-')].join(' ')
 		}).join('\n'))
-		console.log('  ' + letters.join(' ') + '\n');
+		console.log('  ' + letters.join(' '));
+		console.log(new Array(15).fill('-').join('') + "\n");
 	}
 
 	getBoardSpace(col, row) {
