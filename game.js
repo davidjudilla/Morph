@@ -4,7 +4,7 @@ var colors = require('colors');
 
 var layout = require('./layout');
 var Board = require('./board');
-var { makeMove } = require('./minimax');
+var minimax = require('./minimax');
 
 var letters = ['A', 'B', 'C', 'D', 'E', 'F'];
 var numCol = 6;
@@ -88,7 +88,7 @@ class Game {
 	}
 
 	generateMove(board) {
-		makeMove(board);
+		// minimax.makeMove(board);
 
 		var aiPieces = concatAll(board.board).filter(piece => piece.player == 1)
 		// console.log(aiPieces.map(p => p.symbol));
@@ -101,7 +101,7 @@ class Game {
 			return allPieceMoves;
 		})
 		allMoves = concatAll(allMoves);
-		var randMoveIndex = Math.round(Math.random() * allMoves.length);
+		var randMoveIndex = Math.floor(Math.random() * allMoves.length);
 		var randMove = allMoves[randMoveIndex];
 		let [origCol, origRow, destCol, destRow] = randMove.split('').map(x => parseInt(x));
 
