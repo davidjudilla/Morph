@@ -49,6 +49,12 @@ class Board {
 	setBoardSpace(col, row, val) {
 		this.board[this.numRow - row][col - 1] = val;
 	}
+
+	makeMove(piece, col, row) {
+		this.setBoardSpace(col, row, piece);
+		this.setBoardSpace(piece.col, piece.row, 0);
+		piece.move(col, row);
+	}
 }
 
 module.exports = Board;

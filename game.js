@@ -1,4 +1,5 @@
-var rlSync = require('readline-sync');
+var { question } = require('readline-sync');
+var { concatAll } = require('./helper');
 var colors = require('colors');
 
 var layout = require('./layout');
@@ -12,7 +13,7 @@ class Game {
 	constructor() {
 		this.board = new Board(numCol, numRow);
 
-		this.numPlayers = rlSync.question('Morph> How many players? (1 or 2) ');
+		this.numPlayers = question('Morph> How many players? (1 or 2) ');
 		this.name0 = (this.numPlayers == 1) ? "You" : "Player 1"; 
 		this.name1 = (this.numPlayers == 1) ? "I" : "Player 2";
 
@@ -35,14 +36,14 @@ class Game {
 
 	playMove(currPlayer) {
 		if (currPlayer == 0) {
-			let move = rlSync.question('Player 1> Enter a move (Ex. C3C4): ')
+			let move = question('Player 1> Enter a move (Ex. C3C4): ')
 			if (this.validateMove(move)) {
 				this.currPlayer ^= 1;
 			} else {
 				console.log("That wasn't a legal move! (╯°□°）╯︵ ┻━┻  TRY AGAIN".yellow);
 			}
 		} else if (currPlayer != 0 && this.numPlayers > 1) {
-			let move = rlSync.question('Player 2> Enter a move (Ex. C3C4): ')
+			let move = question('Player 2> Enter a move (Ex. C3C4): ')
 			if (this.validateMove(move)) {
 				this.currPlayer ^= 1;
 			} else {
@@ -80,21 +81,20 @@ class Game {
 			console.log("This piece isn't yours! ಠ_ಠ".yellow)
 			return false;
 		}
+
 		let validMoves = piece.getMoves(this.board);
 		console.log(`Valid moves for ${piece.symbol}: ${validMoves.map(move => letters[Number(move[0]) - 1] + move[1])}`);
 		console.log(`Your input: ${move}`);
 		if (validMoves.includes(`${destCol}${destRow}`)) {
-			this.board.setBoardSpace(destCol, destRow, piece);
-			piece.move(destCol, destRow);
-			this.board.setBoardSpace(origCol, origRow, 0);
+			this.board.makeMove(piece, destCol, destRow);
 			return true;
 		}
 		return false;
 	}
 
 	generateMove(board) {
-		var aiPieces = this.concatAll(board.board).filter(piece => piece.player == 1)
-		console.log(aiPieces.map(p => p.symbol));
+		var aiPieces = concatAll(board.board).filter(piece => piece.player == 1)
+		// console.log(aiPieces.map(p => p.symbol));
 
 		var allMoves = aiPieces.map(piece => {
 			let pieceMoves = piece.getMoves(board);
@@ -103,10 +103,10 @@ class Game {
 			})
 			return allPieceMoves;
 		})
-		allMoves = this.concatAll(allMoves);
+		allMoves = concatAll(allMoves);
 		var randMoveIndex = Math.round(Math.random() * allMoves.length);
 		var randMove = allMoves[randMoveIndex];
-		let [origCol, origRow, destCol, destRow] = [...randMove].map(x => parseInt(x));
+		let [origCol, origRow, destCol, destRow] = randMove.split('').map(x => parseInt(x));
 
 		var piece = board.getBoardSpace(origCol, origRow);
 		this.board.setBoardSpace(destCol, destRow, piece);
@@ -117,7 +117,7 @@ class Game {
 	}
 
 	isGameOver(board) {
-		var kings = this.concatAll(board.board).filter(piece => piece.constructor.name == 'King');
+		var kings = concatAll(board.board).filter(piece => piece.constructor.name == 'King');
 		if (kings.length == 1) { 
 			this.winner = kings[0].player;
 			return true;
@@ -130,19 +130,11 @@ class Game {
 		return false
 	}
 
-	concatAll(arr) {
-		var flattenedArr = [];
-		arr.forEach(x => {
-			flattenedArr.push(...x);
-		})
-		return flattenedArr;
-	}
-
 	debug(board) {
-		var target = rlSync.question('Enter target piece: ')
+		var target = question('Enter target piece: ')
 		if (target == 'exit') return false;
 		while(target.length != 2) {
-			target = rlSync.question('Enter target piece: ')
+			target = question('Enter target piece: ')
 		}
 		var targetCol = letters.indexOf(target[0].toUpperCase()) + 1;
 		var targetRow = Number(target[1]);
