@@ -49,7 +49,7 @@ class Game {
 				console.log("That wasn't a legal move! (╯°□°）╯︵ ┻━┻  TRY AGAIN".yellow);
 			}
 		} else {
-			this.generateMove();
+			this.generateMove(this.board);
 			this.currPlayer ^= 1;
 		}
 		this.board.printBoard();
@@ -92,12 +92,32 @@ class Game {
 		return false;
 	}
 
-	generateMove() {
-		console.log("BEEP BOOP IDK YOU GO");
+	generateMove(board) {
+		var aiPieces = this.concatAll(board.board).filter(piece => piece.player == 1)
+		console.log(aiPieces.map(p => p.symbol));
+
+		var allMoves = aiPieces.map(piece => {
+			let pieceMoves = piece.getMoves(board);
+			let allPieceMoves = pieceMoves.map(move => {
+				return `${piece.col}${piece.row}${move[0]}${move[1]}`
+			})
+			return allPieceMoves;
+		})
+		allMoves = this.concatAll(allMoves);
+		var randMoveIndex = Math.round(Math.random() * allMoves.length);
+		var randMove = allMoves[randMoveIndex];
+		let [origCol, origRow, destCol, destRow] = [...randMove].map(x => parseInt(x));
+
+		var piece = board.getBoardSpace(origCol, origRow);
+		this.board.setBoardSpace(destCol, destRow, piece);
+		piece.move(destCol, destRow);
+		this.board.setBoardSpace(origCol, origRow, 0);
+		
+		console.log(`My move is ${letters[origCol - 1]}${origRow}${letters[destCol - 1]}${destRow}`.yellow);
 	}
 
 	isGameOver(board) {
-		var kings = this.concatAll(board).filter(piece => piece.constructor.name == 'King');
+		var kings = this.concatAll(board.board).filter(piece => piece.constructor.name == 'King');
 		if (kings.length == 1) { 
 			this.winner = kings[0].player;
 			return true;
@@ -110,10 +130,10 @@ class Game {
 		return false
 	}
 
-	concatAll(board) {
+	concatAll(arr) {
 		var flattenedArr = [];
-		board.board.forEach(row => {
-			flattenedArr.push(...row);
+		arr.forEach(x => {
+			flattenedArr.push(...x);
 		})
 		return flattenedArr;
 	}

@@ -82,7 +82,7 @@ class Morph {
 		let getNextSpace = () => board.getBoardSpace(this.col + (offset[0]*count), this.row + (offset[1]*count));
 
 		let next = getNextSpace();
-		console.log('offset:', offset);
+		// console.log('offset:', offset);
 		debugger
 		while(next != undefined) {
 			// Can't take your own pieces
@@ -94,7 +94,7 @@ class Morph {
 			count++;
 			next = getNextSpace();
 		}
-		console.log('moves', moves);
+		// console.log('moves', moves);
 		return moves;
 	}
 }
