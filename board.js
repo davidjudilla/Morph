@@ -55,7 +55,6 @@ class Board {
 		piece.move(col, row);
 	}
 
-	//
 	undoMove(piece, origCol, origRow) {
 		this.setBoardSpace(origCol, origRow, piece);
 		this.setBoardSpace(piece.col, piece.row, 0);

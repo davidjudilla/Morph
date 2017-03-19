@@ -13,6 +13,9 @@
   "scripts": {
     "test": "jest"
   },
+  "jest": {
+    "verbose" : true
+  },
   "keywords": [],
   "author": "",
   "license": "ISC"
