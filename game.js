@@ -1,9 +1,10 @@
 var { question } = require('readline-sync');
-var { concatAll } = require('./helper');
+var { concatAll, parseMove } = require('./helper');
 var colors = require('colors');
 
 var layout = require('./layout');
 var Board = require('./board');
+var { makeMove } = require('./minimax');
 
 var letters = ['A', 'B', 'C', 'D', 'E', 'F'];
 var numCol = 6;
@@ -67,14 +68,8 @@ class Game {
 			console.warn("This input isn't the right length ".yellow)
 			return false
 		}
-		move = move.toUpperCase();
 
-		let [origCol, origRow] = [...move.slice(0,2)];
-		let [destCol, destRow] = [...move.slice(2)];
-		origCol = letters.indexOf(origCol.toUpperCase()) + 1;
-		destCol = letters.indexOf(destCol.toUpperCase()) + 1;
-		origRow = Number(origRow);
-		destRow = Number(destRow);
+		let [origCol, origRow, destCol, destRow] = parseMove(move);
 
 		let piece = this.board.getBoardSpace(origCol, origRow);
 		if (piece.player != this.currPlayer) {
@@ -93,6 +88,8 @@ class Game {
 	}
 
 	generateMove(board) {
+		makeMove(board);
+
 		var aiPieces = concatAll(board.board).filter(piece => piece.player == 1)
 		// console.log(aiPieces.map(p => p.symbol));
 

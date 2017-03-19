@@ -55,6 +55,18 @@ class Board {
 		this.setBoardSpace(piece.col, piece.row, 0);
 		piece.move(col, row);
 	}
+
+	undoMove(piece, col, row) {
+		this.setBoardSpace(col, row, piece);
+		this.setBoardSpace(piece.col, piece.row, 0);
+		if (piece.constructor.name == "Morph") {
+			piece.col = move[0];
+			piece.row = move[1];
+			piece.undo();
+		} else {
+			piece.move(move[0], move[1]);
+		}
+	}
 }
 
 module.exports = Board;

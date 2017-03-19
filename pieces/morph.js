@@ -50,6 +50,11 @@ class Morph {
 		this.flowIndex = (this.flowIndex + 1) % this.pieceFlow.length
 	}
 
+	undo() {
+		this.flowIndex = this.flowIndex - 1;
+		if (this.flowIndex < 0) this.flowIndex = 2;
+	}
+
 	getMoves(board) {
 		let moves = [];
 		let currPieceOffsets = this.offsets[this.currPiece];
