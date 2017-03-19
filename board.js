@@ -7,7 +7,6 @@ class Board {
 		this.numRow = numRow;
 		this.board = this.createBoard();
 		this.fillWithPieces(this.board, layout);
-
 	}
 
 	createBoard() {
