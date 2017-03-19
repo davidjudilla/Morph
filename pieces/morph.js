@@ -64,11 +64,18 @@ class Morph {
 				moves.push(...this.getMovesInLine(board, offset))
 			} else {
 				let target = board.getBoardSpace(this.col + offset[0], this.row + offset[1]);
+
 				if (target == undefined || target.player == this.player) return;
 				// target is moving forward, or backwards capture = push
 				// console.log(offset, target);
-				if ((offset[1] >= 0) || (offset[1] < 0 && target.player == !this.player)){ 
-					moves.push(`${this.col + offset[0]}${this.row + offset[1]}`);
+				if (this.player == 0) {
+					if ((offset[1] >= 0) || (offset[1] < 0 && target.player == !this.player)){ 
+						moves.push(`${this.col + offset[0]}${this.row + offset[1]}`);
+					}
+				} else {
+					if ((offset[1] <= 0) || (offset[1] > 0 && target.player == !this.player)){ 
+						moves.push(`${this.col + offset[0]}${this.row + offset[1]}`);
+					}
 				}
 			}
 
@@ -93,7 +100,11 @@ class Morph {
 			// Can't take your own pieces
 			if (next.player == this.player) break;
 			// If moving forward/sideways or backwards capturing an enemy
-			if (offset[1] >= 0 || (offset[1] < 0 && next.player == !this.player)) moves.push(`${this.col + (offset[0]*count)}${this.row + (offset[1]*count)}`);
+			if (this.player == 0) {
+				if (offset[1] >= 0 || (offset[1] < 0 && next.player == !this.player)) moves.push(`${this.col + (offset[0]*count)}${this.row + (offset[1]*count)}`);
+			} else {
+				if (offset[1] <= 0 || (offset[1] > 0 && next.player == !this.player)) moves.push(`${this.col + (offset[0]*count)}${this.row + (offset[1]*count)}`);
+			}
 			if(next != 0) break;
 
 			count++;
