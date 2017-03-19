@@ -1,10 +1,8 @@
 var { concatAll, parseMinimaxMove } = require('./helper');
 
 class Minimax {
-	constructor() {
-
-	}
-	makeMove(board) {
+	static makeMove(game) {
+		var { board, isGameOver } = game;
 		var depth = 0;
 		var maxDepth = 5;
 		var score;
@@ -12,7 +10,7 @@ class Minimax {
 		var bMove;
 
 		var humanPieces = concatAll(board.board).filter(piece => piece.player == 0);
-		var opponentPieces = concatAll(board.board).filter(piece => piece.player == 1);	
+		var opponentPieces = concatAll(board.board).filter(piece => piece.player == 1);
 
 		var allOppMoves = opponentPieces.map(piece => {
 			// let pieceMoves = piece.getMoves(board);
@@ -25,7 +23,7 @@ class Minimax {
 		allOppMoves = concatAll(allOppMoves);
 
 		allOppMoves.forEach(move => {
-			let [origCol, origRow, destCol, destRow] = move; 
+			let [origCol, origRow, destCol, destRow] = move;
 			let piece = board.getBoardSpace(origCol, origRow);
 			board.makeMove(piece, destCol, destRow);
 			score = this.max(depth + 1);
@@ -40,7 +38,10 @@ class Minimax {
 	}
 
 	max(depth) {
+		var best = Number.MIN_SAFE_INTEGER;
+		var score;
+
 	}
 }
 
-module.exports = new Minimax();
+module.exports = Minimax;

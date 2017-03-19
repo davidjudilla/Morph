@@ -15,7 +15,7 @@ class Game {
 		this.board = new Board(numCol, numRow);
 
 		this.numPlayers = question('Morph> How many players? (1 or 2) ');
-		this.name0 = (this.numPlayers == 1) ? "You" : "Player 1"; 
+		this.name0 = (this.numPlayers == 1) ? "You" : "Player 1";
 		this.name1 = (this.numPlayers == 1) ? "I" : "Player 2";
 
 		this.board.printBoard();
@@ -89,7 +89,8 @@ class Game {
 
 	generateMove(board) {
 		// minimax.makeMove(board);
-
+		console.log(minimax)
+		
 		var aiPieces = concatAll(board.board).filter(piece => piece.player == 1)
 		// console.log(aiPieces.map(p => p.symbol));
 
@@ -109,13 +110,13 @@ class Game {
 		this.board.setBoardSpace(destCol, destRow, piece);
 		piece.move(destCol, destRow);
 		this.board.setBoardSpace(origCol, origRow, 0);
-		
+
 		console.log(`My move is ${letters[origCol - 1]}${origRow}${letters[destCol - 1]}${destRow}`.yellow);
 	}
 
 	isGameOver(board) {
 		var kings = concatAll(board.board).filter(piece => piece.constructor.name == 'King');
-		if (kings.length == 1) { 
+		if (kings.length == 1) {
 			this.winner = kings[0].player;
 			return true;
 		}
@@ -147,5 +148,3 @@ class Game {
 }
 
 module.exports = Game
-
-
