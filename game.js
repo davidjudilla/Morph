@@ -89,7 +89,7 @@ class Game {
 
 	generateMove(board) {
 		// minimax.makeMove(board);
-		console.log(minimax)
+		// console.log(minimax)
 		
 		var aiPieces = concatAll(board.board).filter(piece => piece.player == 1)
 		// console.log(aiPieces.map(p => p.symbol));
@@ -118,14 +118,15 @@ class Game {
 		var kings = concatAll(board.board).filter(piece => piece.constructor.name == 'King');
 		if (kings.length == 1) {
 			this.winner = kings[0].player;
-			return true;
+			// return true;
+			return this.winner ? -10000 : 10000;
 		}
 		// var king0 = kings.filter(king => king.player == 0);
 		// var king1 = kings.filter(king => king.player == 1);
 
 		// console.log(king0);
 		// console.log(king1);
-		return false
+		return 0;
 	}
 
 	debug(board) {
