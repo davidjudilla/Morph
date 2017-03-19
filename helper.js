@@ -21,13 +21,4 @@ module.exports = {
 
 		return [origCol, origRow, destCol, destRow];
 	},
-
-	parseMinimaxMove(move) {
-		let [origCol, origRow] = [...move.slice(0,2)];
-		let [destCol, destRow] = [...move.slice(2)];
-		origRow = Number(origRow);
-		destRow = Number(destRow);
-
-		return [origCol, origRow, destCol, destRow];
-	}
 }

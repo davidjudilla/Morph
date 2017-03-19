@@ -56,15 +56,16 @@ class Board {
 		piece.move(col, row);
 	}
 
-	undoMove(piece, col, row) {
-		this.setBoardSpace(col, row, piece);
+	//
+	undoMove(piece, origCol, origRow) {
+		this.setBoardSpace(origCol, origRow, piece);
 		this.setBoardSpace(piece.col, piece.row, 0);
 		if (piece.constructor.name == "Morph") {
-			piece.col = move[0];
-			piece.row = move[1];
+			piece.col = origCol; 
+			piece.row = origRow; 
 			piece.undo();
 		} else {
-			piece.move(move[0], move[1]);
+			piece.move(origCol, origRow);
 		}
 	}
 }
