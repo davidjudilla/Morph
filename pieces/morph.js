@@ -95,7 +95,6 @@ class Morph {
 
 		let next = getNextSpace();
 		// console.log('offset:', offset);
-		debugger
 		while(next != undefined) {
 			// Can't take your own pieces
 			if (next.player == this.player) break;
@@ -112,6 +111,10 @@ class Morph {
 		}
 		// console.log('moves', moves);
 		return moves;
+	}
+
+	toString() {
+		return `${this.constructor.name} ${this.currPiece} col:${this.col} row:${this.row} p:${this.player}`
 	}
 }
 

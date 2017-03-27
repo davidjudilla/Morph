@@ -26,6 +26,10 @@ class King {
 		return moves.filter(x => x)
 	}
 
+	toString() {
+		return `${this.constructor.name} col:${this.col} row:${this.row} p:${this.player}`
+	}
+
 }
 
 module.exports = King;

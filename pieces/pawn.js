@@ -36,6 +36,10 @@ class Pawn {
 		if (target && target.player != this.player) return true;
 		return false
 	}
+
+	toString() {
+		return `${this.constructor.name} col:${this.col} row:${this.row} p:${this.player}`
+	}
 }
 
 module.exports = Pawn;
