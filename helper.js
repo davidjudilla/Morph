@@ -21,4 +21,17 @@ module.exports = {
 
 		return [origCol, origRow, destCol, destRow];
 	},
+
+	deepCopy(o) {
+      var copy = o,k;
+   
+      if (o && typeof o === 'object') {
+          copy = Object.prototype.toString.call(o) === '[object Array]' ? [] : {};
+          for (k in o) {
+              copy[k] = deepCopy(o[k]);
+          }
+      }
+   
+      return copy;
+  	},
 }

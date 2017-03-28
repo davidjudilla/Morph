@@ -4,7 +4,7 @@ var colors = require('colors');
 
 var layout = require('./layout');
 var Board = require('./board');
-var minimax = require('./minimax');
+var minimax = require('./minimaxAlphaBeta');
 
 var letters = ['A', 'B', 'C', 'D', 'E', 'F'];
 var numCol = 6;
@@ -88,30 +88,39 @@ class Game {
 	}
 
 	generateMove(board) {
-		// minimax.makeMove(board);
-		// console.log(minimax)
+		const bestMove = minimax.makeMove(this);
+		let [origCol, origRow, destCol, destRow] = bestMove;
+		console.log(origCol, origRow, destCol, destRow);
 		
-		var aiPieces = concatAll(board.board).filter(piece => piece.player == 1)
-		// console.log(aiPieces.map(p => p.symbol));
-
-		var allMoves = aiPieces.map(piece => {
-			let pieceMoves = piece.getMoves(board);
-			let allPieceMoves = pieceMoves.map(move => {
-				return `${piece.col}${piece.row}${move[0]}${move[1]}`
-			})
-			return allPieceMoves;
-		})
-		allMoves = concatAll(allMoves);
-		var randMoveIndex = Math.floor(Math.random() * allMoves.length);
-		var randMove = allMoves[randMoveIndex];
-		let [origCol, origRow, destCol, destRow] = randMove.split('').map(x => parseInt(x));
-
 		var piece = board.getBoardSpace(origCol, origRow);
 		this.board.setBoardSpace(destCol, destRow, piece);
 		piece.move(destCol, destRow);
 		this.board.setBoardSpace(origCol, origRow, 0);
 
 		console.log(`My move is ${letters[origCol - 1]}${origRow}${letters[destCol - 1]}${destRow}`.yellow);
+		return;
+		
+		// var aiPieces = concatAll(board.board).filter(piece => piece.player == 1)
+		// // console.log(aiPieces.map(p => p.symbol));
+
+		// var allMoves = aiPieces.map(piece => {
+		// 	let pieceMoves = piece.getMoves(board);
+		// 	let allPieceMoves = pieceMoves.map(move => {
+		// 		return `${piece.col}${piece.row}${move[0]}${move[1]}`
+		// 	})
+		// 	return allPieceMoves;
+		// })
+		// allMoves = concatAll(allMoves);
+		// var randMoveIndex = Math.floor(Math.random() * allMoves.length);
+		// var randMove = allMoves[randMoveIndex];
+		// let [origCol, origRow, destCol, destRow] = [...randMove].map(x => parseInt(x));
+
+		// var piece = board.getBoardSpace(origCol, origRow);
+		// this.board.setBoardSpace(destCol, destRow, piece);
+		// piece.move(destCol, destRow);
+		// this.board.setBoardSpace(origCol, origRow, 0);
+
+		// console.log(`My move is ${letters[origCol - 1]}${origRow}${letters[destCol - 1]}${destRow}`.yellow);
 	}
 
 	isGameOver(board) {
@@ -124,8 +133,6 @@ class Game {
 		// var king0 = kings.filter(king => king.player == 0);
 		// var king1 = kings.filter(king => king.player == 1);
 
-		// console.log(king0);
-		// console.log(king1);
 		return 0;
 	}
 
@@ -144,6 +151,7 @@ class Game {
 			console.log(piece.offsets[piece.currPiece])
 		}
 		console.log('Moves: ' + piece.getMoves(this.board));
+		console.log('Piece to string:', piece);
 		return true;
 	}
 }

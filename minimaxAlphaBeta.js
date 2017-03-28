@@ -16,7 +16,7 @@ var minimax = {
 	makeMove(game) {
 		this.board = game.board;
 		this.isGameOver = game.isGameOver;
-		this.maxDepth = 3;
+		this.maxDepth = 5;
 
 		var depth = 0;
 		var maxDepth = 5;
@@ -39,8 +39,10 @@ var minimax = {
 			let target = this.board.getBoardSpace(destCol, destRow);
 
 			this.board.makeMove(piece, destCol, destRow);
-			score = this.min(depth + 1);
+			score = this.min(depth + 1, best);
 			if(score > best) { bMove = move; best = score; }
+
+			if (piece.constructor.name == "Morph") { debugger; piece.undo();}
 			this.board.undoMove(piece, origCol, origRow);
 			this.board.undoMove(target, destCol, destRow);
 		})
@@ -48,7 +50,8 @@ var minimax = {
 		return bMove;
 	},
 
-	min(depth) {
+	// finds min of all child moves
+	min(depth, alpha) {
 		var minBest = Number.MAX_SAFE_INTEGER;
 		var score;
 		if (this.isGameOver(this.board)) return this.isGameOver(this.board);
@@ -63,28 +66,39 @@ var minimax = {
 		})
 		allHumanMoves = concatAll(allHumanMoves);
 
-		allHumanMoves.forEach(move => {
+		for (let move of allHumanMoves) {
 			let [origCol, origRow, destCol, destRow] = move;
 			let piece = this.board.getBoardSpace(origCol, origRow);
 			let target = this.board.getBoardSpace(destCol, destRow);
 			
 			this.board.makeMove(piece, destCol, destRow);
-			score = this.max(depth + 1);
+			score = this.max(depth + 1, minBest);
 			if(score < minBest) { minBest = score; }
+
+			if (piece.constructor.name == "Morph") { piece.undo(); }
 			this.board.undoMove(piece, origCol, origRow);
 			this.board.undoMove(target, destCol, destRow);
-		})
+
+			if (score < alpha) {
+				return minBest;
+			}
+		}
+
+		// allHumanMoves.forEach(move => {
+		// })
 
 		return minBest;
 
 	},
 
-	max(depth) {
+	// finds the max score off all child moves
+	// alpha is 
+	max(depth, beta) {
 		var maxBest = Number.MIN_SAFE_INTEGER;
 		var score;
 		if (this.isGameOver(this.board)) return this.isGameOver(this.board);
 		if (depth == this.maxDepth) { return this.evaluate(this.board); }
-
+		
 		var opponentPieces = concatAll(this.board.board).filter(piece => piece.player == 1);
 		var allOppMoves = opponentPieces.map(piece => {
 			let allPieceMoves = piece.getMoves(this.board).map(move => {
@@ -94,31 +108,40 @@ var minimax = {
 		})
 		allOppMoves = concatAll(allOppMoves);
 
-		allOppMoves.forEach(move => {
+		for(let move of allOppMoves) {
 			let [origCol, origRow, destCol, destRow] = move;
 			let piece = this.board.getBoardSpace(origCol, origRow);
 			let target = this.board.getBoardSpace(destCol, destRow);
 
 			this.board.makeMove(piece, destCol, destRow);
-			score = this.min(depth + 1);
+			score = this.min(depth + 1, maxBest);
 			if(score > maxBest) { maxBest = score; }
+			
+			if (piece.constructor.name == "Morph") { piece.undo(); }
 			this.board.undoMove(piece, origCol, origRow);
 			this.board.undoMove(target, destCol, destRow);
-		})
+			if (score > beta) {
+				return maxBest;
+			}
+		}
+
+		// allOppMoves.forEach(move => {
+		// })
 
 		return maxBest;
 	},
 
 	evaluate(board) {
+		// const humanPieceCount = concatAll(board.board).filter(piece => piece.player == 0).length;
+		// const oppPieceCount = concatAll(board.board).filter(piece => piece.player == 1).length;
+		// return oppPieceCount - humanPieceCount;
 		const humanPieceSum = concatAll(board.board).filter(piece => piece.player == 0).reduce((p,c) => {
 			return p + pieceValues[c.symbol.toUpperCase()];
 		}, 0);
 		const oppPieceSum = concatAll(board.board).filter(piece => piece.player == 1).reduce((p,c) => {
 			return p + pieceValues[c.symbol.toUpperCase()];
 		}, 0);
-		debugger;
-
-		return oppPieceSum - humanPieceSum;	
+		return oppPieceSum - humanPieceSum;
 	}
 }
 

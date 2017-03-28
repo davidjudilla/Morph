@@ -51,19 +51,25 @@ class Board {
 
 	makeMove(piece, col, row) {
 		this.setBoardSpace(col, row, piece);
-		this.setBoardSpace(piece.col, piece.row, 0);
-		piece.move(col, row);
+		if (piece != 0) {
+			this.setBoardSpace(piece.col, piece.row, 0);
+			piece.move(parseInt(col), parseInt(row));
+		}
 	}
 
-	undoMove(piece, origCol, origRow) {
-		this.setBoardSpace(origCol, origRow, piece);
-		this.setBoardSpace(piece.col, piece.row, 0);
-		if (piece.constructor.name == "Morph") {
-			piece.col = origCol; 
-			piece.row = origRow; 
-			piece.undo();
-		} else {
-			piece.move(origCol, origRow);
+	undoMove(piece, targetCol, targetRow) {
+		this.setBoardSpace(targetCol, targetRow, piece);
+		if (piece != 0) {
+			// if (piece.constructor.name == "Morph") {
+			// 	piece.col = targetCol; 
+			// 	piece.row = targetRow; 
+			// 	// console.log('undo morph');
+			// 	debugger;
+			// 	piece.undo();
+			// } else {
+			// 	piece.move(targetCol, targetRow);
+			// }
+			piece.move(targetCol, targetRow);
 		}
 	}
 }
