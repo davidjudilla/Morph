@@ -59,17 +59,9 @@ class Board {
 
 	undoMove(piece, targetCol, targetRow) {
 		this.setBoardSpace(targetCol, targetRow, piece);
-		if (piece != 0) {
-			// if (piece.constructor.name == "Morph") {
-			// 	piece.col = targetCol; 
-			// 	piece.row = targetRow; 
-			// 	// console.log('undo morph');
-			// 	debugger;
-			// 	piece.undo();
-			// } else {
-			// 	piece.move(targetCol, targetRow);
-			// }
-			piece.move(targetCol, targetRow);
+		if (piece != 0 && piece != undefined) {
+			piece.col = targetCol;
+			piece.row = targetRow;
 		}
 	}
 }

@@ -24,7 +24,7 @@ var minimax = {
 		var best = Number.MIN_SAFE_INTEGER;
 		var bMove;
 
-		var opponentPieces = concatAll(this.board.board).filter(piece => piece.player == 1);
+		var opponentPieces = this.getAllOppPieces(this.board.board);
 		var allOppMoves = opponentPieces.map(piece => {
 			let allPieceMoves = piece.getMoves(this.board).map(move => {
 				return [piece.col, piece.row, parseInt(move[0]), parseInt(move[1])]
@@ -42,7 +42,7 @@ var minimax = {
 			score = this.min(depth + 1, best);
 			if(score > best) { bMove = move; best = score; }
 
-			if (piece.constructor.name == "Morph") { debugger; piece.undo();}
+			if (piece.constructor.name == "Morph") { piece.undo();}
 			this.board.undoMove(piece, origCol, origRow);
 			this.board.undoMove(target, destCol, destRow);
 		})
@@ -57,7 +57,7 @@ var minimax = {
 		if (this.isGameOver(this.board)) return this.isGameOver(this.board);
 		if (depth == this.maxDepth) { return this.evaluate(this.board); }
 
-		var humanPieces = concatAll(this.board.board).filter(piece => piece.player == 0);
+		var humanPieces = this.getAllHumanPieces(this.board.board);
 		var allHumanMoves = humanPieces.map(piece => {
 			let allPieceMoves = piece.getMoves(this.board).map(move => {
 				return [piece.col, piece.row, parseInt(move[0]), parseInt(move[1])]
@@ -92,14 +92,13 @@ var minimax = {
 	},
 
 	// finds the max score off all child moves
-	// alpha is 
 	max(depth, beta) {
 		var maxBest = Number.MIN_SAFE_INTEGER;
 		var score;
 		if (this.isGameOver(this.board)) return this.isGameOver(this.board);
 		if (depth == this.maxDepth) { return this.evaluate(this.board); }
 		
-		var opponentPieces = concatAll(this.board.board).filter(piece => piece.player == 1);
+		var opponentPieces = this.getAllOppPieces(this.board.board);
 		var allOppMoves = opponentPieces.map(piece => {
 			let allPieceMoves = piece.getMoves(this.board).map(move => {
 				return [piece.col, piece.row, parseInt(move[0]), parseInt(move[1])]
@@ -120,6 +119,7 @@ var minimax = {
 			if (piece.constructor.name == "Morph") { piece.undo(); }
 			this.board.undoMove(piece, origCol, origRow);
 			this.board.undoMove(target, destCol, destRow);
+
 			if (score > beta) {
 				return maxBest;
 			}
@@ -129,6 +129,20 @@ var minimax = {
 		// })
 
 		return maxBest;
+	},
+
+	getAllHumanPieces(board) {
+		return concatAll(board).filter(piece => {
+			if (piece == 0 || piece == undefined) return false;
+			return piece.player == 0;
+		});
+	},
+
+	getAllOppPieces(board) {
+		return concatAll(board).filter(piece => {
+			if (piece == 0 || piece == undefined) return false;
+			return piece.player == 1;
+		});
 	},
 
 	evaluate(board) {

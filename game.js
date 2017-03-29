@@ -37,6 +37,12 @@ class Game {
 
 	playMove(currPlayer) {
 		if (currPlayer == 0) {
+			// If player has no moves skip
+			if (this.getAllHumanPieces(this.board.board).length < 1) {
+				console.log('You have no moves to play wuahwuahwaaaauh');
+				this.currPlayer ^= 1;
+				return;
+			}
 			let move = question('Player 1> Enter a move (Ex. C3C4): ')
 			if (this.validateMove(move)) {
 				this.currPlayer ^= 1;
@@ -64,6 +70,13 @@ class Game {
 			console.log('Debug finished'.green)
 			return false;
 		}
+		if(move.length == 2) {
+			const targetCol = letters.indexOf(move[0].toUpperCase()) + 1;
+			const targetRow = parseInt(move[1]);
+			const piece = this.board.getBoardSpace(targetCol, targetRow);
+			console.log(`Valid moves for ${piece.symbol}: ${piece.getMoves(this.board).map(move => letters[Number(move[0]) - 1] + move[1])}`);
+			return false;
+		}
 		if(move.length != 4) {
 			console.warn("This input isn't the right length ".yellow)
 			return false
@@ -88,9 +101,9 @@ class Game {
 	}
 
 	generateMove(board) {
+		console.log('Let me think...');
 		const bestMove = minimax.makeMove(this);
 		let [origCol, origRow, destCol, destRow] = bestMove;
-		console.log(origCol, origRow, destCol, destRow);
 		
 		var piece = board.getBoardSpace(origCol, origRow);
 		this.board.setBoardSpace(destCol, destRow, piece);
@@ -98,33 +111,13 @@ class Game {
 		this.board.setBoardSpace(origCol, origRow, 0);
 
 		console.log(`My move is ${letters[origCol - 1]}${origRow}${letters[destCol - 1]}${destRow}`.yellow);
-		return;
-		
-		// var aiPieces = concatAll(board.board).filter(piece => piece.player == 1)
-		// // console.log(aiPieces.map(p => p.symbol));
-
-		// var allMoves = aiPieces.map(piece => {
-		// 	let pieceMoves = piece.getMoves(board);
-		// 	let allPieceMoves = pieceMoves.map(move => {
-		// 		return `${piece.col}${piece.row}${move[0]}${move[1]}`
-		// 	})
-		// 	return allPieceMoves;
-		// })
-		// allMoves = concatAll(allMoves);
-		// var randMoveIndex = Math.floor(Math.random() * allMoves.length);
-		// var randMove = allMoves[randMoveIndex];
-		// let [origCol, origRow, destCol, destRow] = [...randMove].map(x => parseInt(x));
-
-		// var piece = board.getBoardSpace(origCol, origRow);
-		// this.board.setBoardSpace(destCol, destRow, piece);
-		// piece.move(destCol, destRow);
-		// this.board.setBoardSpace(origCol, origRow, 0);
-
-		// console.log(`My move is ${letters[origCol - 1]}${origRow}${letters[destCol - 1]}${destRow}`.yellow);
 	}
 
 	isGameOver(board) {
-		var kings = concatAll(board.board).filter(piece => piece.constructor.name == 'King');
+		var kings = concatAll(board.board).filter(piece => {
+			if(piece == 0 || piece == undefined) return false;
+			return piece.constructor.name == 'King';
+		})
 		if (kings.length == 1) {
 			this.winner = kings[0].player;
 			// return true;
@@ -136,7 +129,22 @@ class Game {
 		return 0;
 	}
 
+	getAllHumanPieces(board) {
+		return concatAll(board).filter(piece => {
+			if (piece == 0 || piece == undefined) return false;
+			return piece.player == 0;
+		});
+	}
+
+	getAllOppPieces(board) {
+		return concatAll(board).filter(piece => {
+			if (piece == 0 || piece == undefined) return false;
+			return piece.player == 1;
+		});
+	}
+
 	debug(board) {
+		debugger;
 		var target = question('Enter target piece: ')
 		if (target == 'exit') return false;
 		while(target.length != 2) {
