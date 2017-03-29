@@ -41,8 +41,8 @@ var minimax = {
 			this.board.makeMove(piece, destCol, destRow);
 			score = this.min(depth + 1, best);
 			if(score > best) { bMove = move; best = score; }
-
-			if (piece.constructor.name == "Morph") { piece.undo();}
+			
+			if (piece.constructor.name == "Morph") { piece.undo(); }
 			this.board.undoMove(piece, origCol, origRow);
 			this.board.undoMove(target, destCol, destRow);
 		})
@@ -74,7 +74,7 @@ var minimax = {
 			this.board.makeMove(piece, destCol, destRow);
 			score = this.max(depth + 1, minBest);
 			if(score < minBest) { minBest = score; }
-
+			
 			if (piece.constructor.name == "Morph") { piece.undo(); }
 			this.board.undoMove(piece, origCol, origRow);
 			this.board.undoMove(target, destCol, destRow);

@@ -27,9 +27,8 @@ class Game {
 	}
 
 	play() {
-		while(this.isGameOver(this.board) != true) {
+		while(this.isGameOver(this.board) == 0) {
 			this.playMove(this.currPlayer);
-			// this.isGameOver(this.board);
 		}
 		var winner = this.winner ? this.name1 : this.name0;
 		console.log(`${winner.toUpperCase()} IS THE WINNER`.rainbow.bold)
@@ -38,7 +37,14 @@ class Game {
 	playMove(currPlayer) {
 		if (currPlayer == 0) {
 			// If player has no moves skip
-			if (this.getAllHumanPieces(this.board.board).length < 1) {
+			let allMoves = this.getAllHumanPieces(this.board.board).map(piece => {
+				let allPieceMoves = piece.getMoves(this.board).map(move => {
+					return [piece.col, piece.row, parseInt(move[0]), parseInt(move[1])]
+				})
+				return allPieceMoves;
+			})
+			allMoves = concatAll(allMoves);
+			if (allMoves.length < 1) {
 				console.log('You have no moves to play wuahwuahwaaaauh');
 				this.currPlayer ^= 1;
 				return;
@@ -102,7 +108,9 @@ class Game {
 
 	generateMove(board) {
 		console.log('Let me think...');
+		console.time('Minimax');
 		const bestMove = minimax.makeMove(this);
+		console.timeEnd('Minimax');
 		let [origCol, origRow, destCol, destRow] = bestMove;
 		
 		var piece = board.getBoardSpace(origCol, origRow);
@@ -114,6 +122,17 @@ class Game {
 	}
 
 	isGameOver(board) {
+		let allMoves = concatAll(this.board.board).filter(piece => piece != 0).map(piece => {
+				let allPieceMoves = piece.getMoves(this.board).map(move => {
+					return [piece.col, piece.row, parseInt(move[0]), parseInt(move[1])]
+				})
+				return allPieceMoves;
+		})
+
+		if (allMoves < 1) {
+			console.log('ITS A DRAW WTF');
+			return true;
+		}
 		var kings = concatAll(board.board).filter(piece => {
 			if(piece == 0 || piece == undefined) return false;
 			return piece.constructor.name == 'King';
@@ -154,6 +173,10 @@ class Game {
 		var targetRow = Number(target[1]);
 
 		var piece = board.getBoardSpace(targetCol, targetRow);
+		if (piece == 0) {
+			console.log(`${piece} at ${targetCol} ${targetRow}`);
+			return true;
+		}
 		console.log(`${piece.constructor.name}${(piece.currPiece ? `(Curr: ${piece.currPiece})` : '')} at col: ${piece.col} row: ${piece.row}`);
 		if(piece.constructor.name == 'Morph') {
 			console.log(piece.offsets[piece.currPiece])
