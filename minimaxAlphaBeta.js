@@ -13,10 +13,10 @@ const pieceValues = {
 
 // class Minimax {
 var minimax = {
-	makeMove(game) {
+	makeMove(game, depth = 5) {
 		this.board = game.board;
 		this.isGameOver = game.isGameOver;
-		this.maxDepth = 5;
+		this.maxDepth = depth;
 
 		var depth = 0;
 		var maxDepth = 5;
