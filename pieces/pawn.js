@@ -22,10 +22,13 @@ class Pawn {
 	getMoves(board) {
 		let moves = [];	
 		this.offsets.forEach(offset => {
-			if (Math.abs(offset.reduce((p,c) => p + c)) == 1) {
-				moves.push(`${this.col + offset[0]}${this.row + offset[1]}`);
-			} else if (this.validAttack(board, this.col + offset[0], this.row + offset[1])) {
-				moves.push(`${this.col + offset[0]}${this.row + offset[1]}`);
+			if(board.getBoardSpace(this.col + offset[0], this.row + offset[1]) != undefined) {
+				// If the sum of the offsets is one is must be a forward move
+				if (Math.abs(offset.reduce((p,c) => p + c)) == 1) {
+					if (board.getBoardSpace(this.col + offset[0], this.row + offset[1]) == 0) moves.push(`${this.col + offset[0]}${this.row + offset[1]}`);
+				} else if (this.validAttack(board, this.col + offset[0], this.row + offset[1])) {
+					moves.push(`${this.col + offset[0]}${this.row + offset[1]}`);
+				}
 			}
 		});
 

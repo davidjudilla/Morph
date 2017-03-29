@@ -67,7 +67,7 @@ class Morph {
 
 				if (target == undefined || target.player == this.player) return;
 				// target is moving forward, or backwards capture = push
-				// console.log(offset, target);
+				// check which player is moving and correct orientation
 				if (this.player == 0) {
 					if ((offset[1] >= 0) || (offset[1] < 0 && target.player == !this.player)){ 
 						moves.push(`${this.col + offset[0]}${this.row + offset[1]}`);

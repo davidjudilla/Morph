@@ -18,9 +18,11 @@ class King {
 	}
 
 	getMoves(board) {
-		let moves = [];	
+		let moves = [];
 		this.offsets.forEach(offset => {
-			moves.push(`${this.col + offset[0]}${this.row + offset[1]}`);
+			if(board.getBoardSpace(this.col + offset[0], this.row + offset[1]) != undefined) {
+				moves.push(`${this.col + offset[0]}${this.row + offset[1]}`);
+			}
 		});
 
 		return moves.filter(x => x)
