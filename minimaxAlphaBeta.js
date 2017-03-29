@@ -50,11 +50,14 @@ var minimax = {
 		return bMove;
 	},
 
+	// human
 	// finds min of all child moves
 	min(depth, alpha) {
 		var minBest = Number.MAX_SAFE_INTEGER;
 		var score;
-		if (this.isGameOver(this.board)) return this.isGameOver(this.board);
+		if (this.isGameOver(this.board)) {
+			return this.isGameOver(this.board);
+		}
 		if (depth == this.maxDepth) { return this.evaluate(this.board); }
 
 		var humanPieces = this.getAllHumanPieces(this.board.board);
@@ -91,11 +94,14 @@ var minimax = {
 
 	},
 
+	// Opponent
 	// finds the max score off all child moves
 	max(depth, beta) {
 		var maxBest = Number.MIN_SAFE_INTEGER;
 		var score;
-		if (this.isGameOver(this.board)) return this.isGameOver(this.board);
+		if (this.isGameOver(this.board)) {
+			return this.isGameOver(this.board);
+		}
 		if (depth == this.maxDepth) { return this.evaluate(this.board); }
 		
 		var opponentPieces = this.getAllOppPieces(this.board.board);

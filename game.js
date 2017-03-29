@@ -140,7 +140,7 @@ class Game {
 		if (kings.length == 1) {
 			this.winner = kings[0].player;
 			// return true;
-			return this.winner ? -10000 : 10000;
+			return this.winner ? 10000 : -10000;
 		}
 		// var king0 = kings.filter(king => king.player == 0);
 		// var king1 = kings.filter(king => king.player == 1);
