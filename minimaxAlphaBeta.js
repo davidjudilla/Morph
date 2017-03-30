@@ -19,7 +19,6 @@ var minimax = {
 		this.maxDepth = depth;
 
 		var depth = 0;
-		var maxDepth = 5;
 		var score;
 		var best = Number.MIN_SAFE_INTEGER;
 		var bMove;

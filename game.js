@@ -1,5 +1,5 @@
 var { question } = require('readline-sync');
-var { concatAll, parseMove } = require('./helper');
+var { concatAll, parseMove, boardTranslation } = require('./helper');
 var colors = require('colors');
 
 var layout = require('./layout');
@@ -109,8 +109,9 @@ class Game {
 	generateMove(board) {
 		console.log('Let me think...');
 		console.time('Minimax');
-		const bestMove = minimax.makeMove(this);
+		const bestMove = this.iterDS(this) // minimax.makeMove(this);
 		console.timeEnd('Minimax');
+
 		let [origCol, origRow, destCol, destRow] = bestMove;
 		
 		var piece = board.getBoardSpace(origCol, origRow);
@@ -118,7 +119,42 @@ class Game {
 		piece.move(destCol, destRow);
 		this.board.setBoardSpace(origCol, origRow, 0);
 
-		console.log(`My move is ${letters[origCol - 1]}${origRow}${letters[destCol - 1]}${destRow}`.yellow);
+		console.log(`My move is ${letters[origCol - 1]}${origRow}${letters[destCol - 1]}${destRow} (${ boardTranslation(bestMove) })`.yellow);
+	}
+
+	iterDS(game) {
+		let finalTime = Date.now() + 5000;
+		let lastProcTime = 0;
+		let depth = 0;
+		let bestMove;
+		// Trying to predict the processing time and decide to go another ply down 
+		while ((Date.now() + (lastProcTime ** 1.3)) < finalTime) {
+			// console.log((Date.now() + lastProcTime ** 2));
+			// console.log(finalTime);
+			let startTime = Date.now();
+			bestMove = minimax.makeMove(game, depth + 1);
+			let endTime = Date.now();
+			lastProcTime = endTime - startTime;
+
+			depth = depth + 1;
+			console.log(`IDS (depth: ${depth}): time: ${lastProcTime}ms`);
+		}
+		return bestMove;
+	}
+
+	getBestMove(game, bestMove, time) {
+		let promise = new Promise((resolve, reject) => {
+			let depth = 0;
+			setTimeout(() => {
+				console.log('hi');
+				resolve(bestMove);
+			}, time)
+
+			while(1) {
+				bestMove = minimax.makeMove(game, depth + 1);
+			}
+		})
+		return promise;
 	}
 
 	isGameOver(board) {
