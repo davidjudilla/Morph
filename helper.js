@@ -22,6 +22,16 @@ module.exports = {
 		return [origCol, origRow, destCol, destRow];
 	},
 
+	boardTranslation(move) {
+		let [origCol, origRow, destCol, destRow] = move;
+		origCol = letters[Math.abs(origCol - letters.length)];
+		destCol = letters[Math.abs(destCol - letters.length)];
+		origRow = Math.abs(origRow - 8) + 1;
+		destRow = Math.abs(destRow - 8) + 1;
+
+		return origCol + origRow + destCol + destRow;
+	},
+
 	deepCopy(o) {
       var copy = o,k;
    
