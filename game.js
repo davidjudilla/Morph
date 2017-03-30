@@ -31,7 +31,7 @@ class Game {
 			this.playMove(this.currPlayer);
 		}
 		var winner = this.winner ? this.name1 : this.name0;
-		console.log(`${winner.toUpperCase()} IS THE WINNER`.rainbow.bold)
+		console.log(`${winner.toUpperCase()} IS THE WINNER`.bold)
 	}
 
 	playMove(currPlayer) {
@@ -108,9 +108,9 @@ class Game {
 
 	generateMove(board) {
 		console.log('Let me think...');
-		console.time('Minimax');
+		console.time('Total search time');
 		const bestMove = this.iterDS(this) // minimax.makeMove(this);
-		console.timeEnd('Minimax');
+		console.timeEnd('Total search time');
 
 		let [origCol, origRow, destCol, destRow] = bestMove;
 		
