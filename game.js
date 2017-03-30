@@ -31,7 +31,7 @@ class Game {
 			this.playMove(this.currPlayer);
 		}
 		var winner = this.winner ? this.name1 : this.name0;
-		console.log(`${winner.toUpperCase()} IS THE WINNER`.bold)
+		console.log(`${winner.toUpperCase()} ${this.numPlayers == 1 ? 'AM' : 'IS'} THE WINNER`.bold)
 	}
 
 	playMove(currPlayer) {
