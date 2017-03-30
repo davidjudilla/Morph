@@ -55,7 +55,7 @@ var minimax = {
 		var minBest = Number.MAX_SAFE_INTEGER;
 		var score;
 		if (this.isGameOver(this.board)) {
-			return this.isGameOver(this.board) / depth;
+			return this.isGameOver(this.board) - depth;
 		}
 		if (depth == this.maxDepth) { return this.evaluate(this.board); }
 
@@ -100,7 +100,7 @@ var minimax = {
 		var score;
 		// Divide by depth so that the shortest path to win has precedence
 		if (this.isGameOver(this.board)) {
-			return this.isGameOver(this.board) / depth;
+			return this.isGameOver(this.board) + depth;
 		}
 		if (depth == this.maxDepth) { return this.evaluate(this.board); }
 		
